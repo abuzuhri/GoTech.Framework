@@ -54,6 +54,9 @@
     <Compile Include="BaseDataRepository.cs" />
     <Compile Include="BaseGoTechUnitOfWork.cs" />
     <Compile Include="JsonClientResponse.cs" />
+    <Compile Include="Pagination\BaseSearchInfo.cs" />
+    <Compile Include="Pagination\PagedList.cs" />
+    <Compile Include="Pagination\PagingInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
