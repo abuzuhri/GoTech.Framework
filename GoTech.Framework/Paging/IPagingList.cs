@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,10 +16,13 @@ namespace GoTech.Framework.Paging
         }
         public IPagingList(IQueryable<T> source, PagingParamerters pagingParamerters)
         {
+            PaginationDetails.sort_column = pagingParamerters.sort_column;
+            PaginationDetails.sort_type = pagingParamerters.sort_type;
+
             if (!isSortable(source))
             {
                 string SortEx = pagingParamerters.sort_column + " " + pagingParamerters.sort_type;
-                //source = source.OrderBy(SortEx);
+                source = source.OrderBy(SortEx);
             }
 
             pagingParamerters.page_size=pagingParamerters.page_size <= 0 ? PagingParamerters.MAX_RESULT : pagingParamerters.page_size;
