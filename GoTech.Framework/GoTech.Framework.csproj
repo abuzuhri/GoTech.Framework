@@ -57,6 +57,7 @@
     <Compile Include="BaseGoTechEntity.cs" />
     <Compile Include="BaseDataRepository.cs" />
     <Compile Include="BaseGoTechUnitOfWork.cs" />
+    <Compile Include="DbEntityEntryChanged.cs" />
     <Compile Include="JsonClientResponse.cs" />
     <Compile Include="Pagination\BaseSearchInfo.cs" />
     <Compile Include="Pagination\PagedList.cs" />
@@ -65,14 +66,15 @@
     <Compile Include="Paging\PaginationDetails.cs" />
     <Compile Include="Paging\PagingParamerters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\BsinessRulesException.cs" />
+    <Compile Include="Service\IBusinessRuleValidation.cs" />
+    <Compile Include="Transaction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Transaction\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
