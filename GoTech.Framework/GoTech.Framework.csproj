@@ -57,6 +57,7 @@
     <Compile Include="BaseGoTechEntity.cs" />
     <Compile Include="BaseDataRepository.cs" />
     <Compile Include="BaseGoTechUnitOfWork.cs" />
+    <Compile Include="Configuration.cs" />
     <Compile Include="DbEntityEntryChanged.cs" />
     <Compile Include="JsonClientResponse.cs" />
     <Compile Include="Pagination\BaseSearchInfo.cs" />

@@ -9,7 +9,7 @@ namespace GoTech.Framework
 {
     public class BaseGoTechUnitOfWork : IDisposable
     {
-        private static BaseGoTechContext context=null;
+        private  BaseGoTechContext context=null;
         private bool disposed;
         private Dictionary<string, object> repositories;
 
@@ -19,8 +19,7 @@ namespace GoTech.Framework
 
         public BaseGoTechUnitOfWork(BaseGoTechContext context)
         {
-            if(context==null)
-                BaseGoTechUnitOfWork.context = context;
+           this.context = context;
             this.OnSavingChanges += new EventHandler(context_onSavingChanges);
             this.OnSavedChanges += new EventHandler(context_onSavedChanges);
         }
@@ -51,12 +50,12 @@ namespace GoTech.Framework
         private static IBusinessRuleValidation GetBusinessRuleTransationValidation(object sender, Type type)
         {
             IBusinessRuleValidation validator = null;
-            string strTypeName = type.BaseType.Name;
+            string strTypeName = type.Name;
 
             try
             {
-                string assemblyName = sender.GetType().AssemblyQualifiedName.Split(",".ToCharArray())[1].Trim();
-                string typeName = assemblyName + ".BusinessRuleValidation." + strTypeName + "BusinessRule";
+                string assemblyName = Configuration.BusinessRuleValidationAssemblyname;
+                string typeName = Configuration.BusinessRuleValidationNamespace + "." + strTypeName + "BusinessRule";
                 string fullyQualifiedName = typeName + ", " + assemblyName;
                 Type validatorType = Type.GetType(fullyQualifiedName);
                 validator = Activator.CreateInstance(validatorType) as IBusinessRuleValidation;
@@ -70,14 +69,14 @@ namespace GoTech.Framework
             IBusinessRuleValidation validator = null;
 
             string strTypeName = "";
-            if (dbEntityEntry.State == EntityState.Added)
+            if (dbEntityEntry.State == EntityState.Added || dbEntityEntry.State == EntityState.Deleted)
                 strTypeName = dbEntityEntry.Entity.GetType().Name;
             else strTypeName = dbEntityEntry.Entity.GetType().BaseType.Name;
 
             try
             {
-                string assemblyName = sender.GetType().AssemblyQualifiedName.Split(",".ToCharArray())[1].Trim();
-                string typeName = assemblyName + ".BusinessRuleValidation." + strTypeName + "BusinessRule";
+                string assemblyName = Configuration.BusinessRuleValidationAssemblyname;
+                string typeName = Configuration.BusinessRuleValidationNamespace +"." + strTypeName + "BusinessRule";
                 string fullyQualifiedName = typeName + ", " + assemblyName;
                 Type validatorType = Type.GetType(fullyQualifiedName);
                 validator = Activator.CreateInstance(validatorType) as IBusinessRuleValidation;
@@ -124,11 +123,11 @@ namespace GoTech.Framework
                             switch (ChangedObj.state)
                             {
                                 case EntityState.Added:
-                                    validator.OnCreating(ChangedObj.entity); break;
+                                    validator.OnCreated(ChangedObj.entity); break;
                                 case EntityState.Modified:
-                                    validator.OnUpdating(ChangedObj.entity); break;
+                                    validator.OnUpdated(ChangedObj.entity); break;
                                 case EntityState.Deleted:
-                                    validator.OnDeleting(ChangedObj.entity); break;
+                                    validator.OnDeleted(ChangedObj.entity); break;
 
                             }
                         }
@@ -154,7 +153,8 @@ namespace GoTech.Framework
 
         public virtual void Save()
         {
-            OnSavingChanges.Invoke(this, null);
+            if(Configuration.IsBusinessRuleValidationEnabled)
+                OnSavingChanges.Invoke(this, null);
             context.SaveChanges();
         }
 

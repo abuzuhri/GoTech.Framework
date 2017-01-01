@@ -27,7 +27,8 @@ namespace GoTech.Framework
         }
         public void Commit()
         {
-            OnSavedChanges.Invoke(this, null);
+            if(Configuration.IsBusinessRuleValidationEnabled)
+                OnSavedChanges.Invoke(this, null);
             ChangedDBEntities.Clear();
             context.Database.CurrentTransaction.Commit();
             isCommited = true;
